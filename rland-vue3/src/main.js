@@ -9,6 +9,8 @@ import About from './components/About.vue';
 import MenuList from './components/menu/List.vue';
 import MenuDetail from './components/menu/Detail.vue';
 
+import AdminMenuList from './components/admin/menu/List.vue';
+
 /*
 
 /menu/list
@@ -20,13 +22,16 @@ import MenuDetail from './components/menu/Detail.vue';
 */ 
 
 const routes = [
+  {path:'/index', component: Index},
   { path: '/', component: Layout, children:[
-      {path:'index', component: Index},
       {path:'menu/list', component: MenuList},
       {path:'menu/detail', component: MenuDetail},
       {path:'about', component: About},
   ]},
-  { path: '/admin/index', component: AdminLayout },
+  { path: '/admin', component: AdminLayout, children:[
+      // {path:'index', component: AdminMenuList},
+      {path:'menu/list', component: AdminMenuList},
+  ] },
 ]
 
 const router = createRouter({
