@@ -1,15 +1,30 @@
 <script>
+import NewMenuList from '../menu/NewMenuList.vue';
 // const def = 
 export default {
   data() {
     return {
-      list: [{}, {}, {}, {}]
+      list: [{}, {}, {}, {}],
+      newList: []
     }
   },
   mounted() {
     fetch("http://localhost:8080/menus")
       .then(response => response.json())
-      .then(list => this.list = list);
+      .then(data => {
+        this.list = data.list;
+        this.newList = data.newList;
+      });
+
+    // .then 을 하게 되면 위에서 받아온 것을 이어서 계속 받게된다.
+    // .then(response => {return response.json();})
+    // .then(function(list){
+    //   this.list = list;
+    //   this.list.push(list[0]);
+    // })
+  },
+  components: {
+    NewMenuList,
   }
 }
 </script>
@@ -44,7 +59,7 @@ export default {
       </aside>
       <nav class="menu-category">
         <div>
-          <h1 class="text-normal-bold">메뉴분류</h1>
+        <h1 class="text-normal-bold">메뉴분류</h1>
         </div>
         <ul>
           <li class="menu-selected">
@@ -78,7 +93,10 @@ export default {
             <form class="">
               <h1>{{ m.name }}</h1>
               <div class="menu-img-box">
-                <a href="detail.html"><img class="menu-img" src="/image/product/12.png"></a>
+                <!-- <router-link :to="'detail?id=' + m.id"><img class="menu-img"
+                                    :src="`/image/product/` + m.img"></router-link> -->
+                <router-link :to="'./' + m.id"><img class="menu-img" :src="`/image/product/` + m.img"></router-link>
+                <!-- <img :src="'/path/to/images/' + fileName" /> -->
               </div>
               <div class="menu-price">{{ m.price }}원</div>
               <div class="menu-option-list">
@@ -88,9 +106,9 @@ export default {
                 </span>
                 <span class="menu-option ml-2">
                   <input class="menu-option-input" type="checkbox">
-                <label>Large</label>
-              </span>
-            </div>
+                  <label>Large</label>
+                </span>
+              </div>
               <div class="menu-button-list">
                 <input class="btn btn-fill btn-size-1 btn-size-1-lg" type="submit" value="담기">
                 <input class="btn btn-line btn-size-1 btn-size-1-lg ml-1" type="submit" value="주문하기">
@@ -105,16 +123,7 @@ export default {
         <a href="" class="btn btn-round w-100 w-50-md py-2">더보기(13+)</a>
       </div>
 
-      <section class="new-menu menu-section-p">
-        <h1 class="d-none">신메뉴 목록</h1>
-        <!-- <ul>
-                                                                  <li>
-                                                                    </li>
-                                                                  </ul>  -->
-        <div class="list">
-          <span>신규로 출시된 메뉴가 없습니다.</span>
-        </div>
-      </section>
+      <NewMenuList />
 
     </section>
   </main>
